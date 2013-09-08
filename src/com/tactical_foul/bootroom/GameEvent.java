@@ -1,0 +1,67 @@
+
+package com.tactical_foul.bootroom;
+
+public class GameEvent {
+    /* Event Types */
+
+    /* Primary Types */
+    public final static int PASS = 1;
+    public final static int SHOT = 2;
+    public final static int SUBSTITUTION = 3;
+    public final static int SHOT_AGAINST = 4;
+    public final static int TACKLE = 5;
+    public final static int FOUL = 6;
+    public final static int YELLOW_CARD = 7;
+    public final static int RED_CARD = 8;
+
+    /* Pass Sub-Types */
+    public final static int PASS_COMPLETED = 1;
+    public final static int PASS_INCOMPLETED = 2;
+    public final static int PASS_KEY = 3;
+    public final static int ASSIST = 4;
+
+    /* Shot Sub-Types */
+    public final static int SHOT_ON_TARGET = 1;
+    public final static int SHOT_OFF_TARGET = 2;
+    public final static int GOAL = 3;
+
+    /* Substitution Sub-Types */
+    public final static int SUBSTITUTION_ON = 1;
+    public final static int SUBSTITUTION_OFF = 2;
+
+    /* Shot-Against Sub-Types */
+    public final static int SAVE = 1;
+    public final static int CONCEDED = 2;
+
+    /* for events where there is no other player */
+    public final static int NONE = 0;
+
+    public long id;
+    public int Timestamp; // in seconds
+    public long Player_id;
+    public long Game_id;
+    public int EventType;
+    public int EventSubType; // optional secondary information (e.g. pass
+                             // completed)
+    public long OtherPlayer_id; // if it exists
+
+    private static int Id_Count = 1;
+
+    public GameEvent(long id, int timestamp, long player_id, long game_id, int eventType,
+            int eventSubType, long otherPlayer_id) {
+        this.id = id;
+        Timestamp = timestamp;
+        Player_id = player_id;
+        Game_id = game_id;
+        EventType = eventType;
+        EventSubType = eventSubType;
+        OtherPlayer_id = otherPlayer_id;
+    }
+
+    public GameEvent(int timestamp, long player_id, long game_id, int eventType, int eventSubType,
+            long otherPlayer_id) {
+        this(Id_Count, timestamp, player_id, game_id, eventType, eventSubType, otherPlayer_id);
+        ++Id_Count;
+    }
+
+}

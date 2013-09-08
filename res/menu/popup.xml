@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/pass"
+        android:title="Pass ->">
+
+        <!-- pass submenu -->
+        <menu>
+            <item
+                android:id="@+id/pass_completed"
+                android:title="Completed"/>
+            <item
+                android:id="@+id/pass_incompleted"
+                android:title="Incompleted"/>
+            <item
+                android:id="@+id/pass_key"
+                android:title="@string/menu_key_pass"/>
+            <item
+                android:id="@+id/pass_assist"
+                android:title="Assist"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/shot"
+        android:title="Shot ->">
+
+        <!-- shot submenu -->
+        <menu>
+            <item
+                android:id="@+id/shot_on_target"
+                android:title="On Target"/>
+            <item
+                android:id="@+id/shot_off_target"
+                android:title="Off Target"/>
+            <item
+                android:id="@+id/shot_goal"
+                android:title="GOLASSO!!"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/tackle"
+        android:title="@string/menu_tackle"/>
+    <item
+        android:id="@+id/gk_menu"
+        android:title="@string/menu_gk_menu">
+
+        <!-- GK submenu -->
+        <menu>
+            <item
+                android:id="@+id/gk_save"
+                android:title="@string/menu_gk_save"/>
+            <item
+                android:id="@+id/gk_conceded"
+                android:title="@string/menu_gk_conceded"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/disciplinary"
+        android:title="@string/menu_disciplinary">
+
+        <!-- Disciplinary submenu -->
+        <menu>
+            <item
+                android:id="@+id/foul"
+                android:title="@string/menu_foul"/>
+            <item
+                android:id="@+id/yellow_card"
+                android:title="@string/menu_yellow_card"/>
+            <item
+                android:id="@+id/red_card"
+                android:title="@string/menu_red_card"/>
+        </menu>
+    </item>
+        <item
+        android:id="@+id/substitution"
+        android:title="@string/menu_substitution">
+
+        <!-- substitutes submenu; dynamically populate -->
+        <menu>
+        </menu>
+    </item>
+
+</menu>
