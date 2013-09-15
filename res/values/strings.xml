@@ -4,6 +4,9 @@
     <string name="app_name">Bootroom</string>
     <string name="action_settings">Settings</string>
     <string name="action_clear_events">Delete All Events!</string>
+    <string name="action_export_events">Export Game Events</string>
+    <string name="action_export_beams">Export the Beams</string>
+    <string name="action_export_game">Export Game</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_key_pass">Key</string>
     <string name="menu_substitution">Substitution -></string>

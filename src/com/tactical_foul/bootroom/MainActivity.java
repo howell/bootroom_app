@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Connectivity.init();
         initButtons();
         initClock();
         tvHomeScore = (TextView) findViewById(R.id.home_score);
@@ -57,13 +58,13 @@ public class MainActivity extends Activity {
         tvAwayTeam = (TextView) findViewById(R.id.away_team);
         HomeTeam = Team.createTheBeams();
         tvHomeTeam.setText(HomeTeam.Name);
-        tvAwayTeam.setText("Cowboys");
+        tvAwayTeam.setText("DDozen");
         SubbedPlayers = new HashMap<Long, Player>();
         for (int i = 0; i < HomeTeam.Roster.length; ++i) {
             SubbedPlayers.put(HomeTeam.Roster[i].id, HomeTeam.Roster[i]);
         }
         FieldPlayers = new HashMap<Long, Player>();
-        CurrentGame = new Game(1, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
+        CurrentGame = new Game(2, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
         GameEventDB = new GameEventDatabase(this);
     }
 
@@ -81,6 +82,17 @@ public class MainActivity extends Activity {
                 GameEventDB.reset();
                 break;
 
+            case R.id.action_export_events:
+                GameEventDB.export_all();
+                break;
+
+            case R.id.action_export_beams:
+                HomeTeam.export();
+                break;
+
+            case R.id.action_export_game:
+                CurrentGame.export();
+
             default:
                 break;
         }
@@ -90,6 +102,7 @@ public class MainActivity extends Activity {
     }
 
     private class PositionButton implements View.OnClickListener {
+
         @Override
         public void onClick(final View v) {
             PopupMenu pm = new PopupMenu(v.getContext(), v);

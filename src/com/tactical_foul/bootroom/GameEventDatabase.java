@@ -3,6 +3,7 @@ package com.tactical_foul.bootroom;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -29,10 +30,13 @@ public class GameEventDatabase extends SQLiteOpenHelper {
 
     /* database create sql statement */
     private static final String DATABASE_CREATE = "create table " + TABLE_GAME_EVENTS + "("
-            + COLUMN_ID + " integer primary key, " + COLUMN_TIMESTAMP + " integer, "
-            + COLUMN_PLAYER_ID + " integer, " + COLUMN_GAME_ID + " integer, " + COLUMN_EVENT_TYPE
-            + " integer, " + COLUMN_EVENT_SUBTYPE + " integer, " + COLUMN_OTHER_PLAYER_ID
-            + " integer);";
+            + COLUMN_ID + " integer primary key, " + 
+            COLUMN_TIMESTAMP + " integer, " + 
+            COLUMN_PLAYER_ID + " integer, " + 
+            COLUMN_GAME_ID + " integer, " + 
+            COLUMN_EVENT_TYPE + " integer, "
+            + COLUMN_EVENT_SUBTYPE + " integer, " 
+            + COLUMN_OTHER_PLAYER_ID + " integer);";
 
     public GameEventDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -76,6 +80,24 @@ public class GameEventDatabase extends SQLiteOpenHelper {
     public void reset() {
         onUpgrade(Database, DATABASE_VERSION, DATABASE_VERSION);
         Log.d(LOG_TAG, "Reset DB");
+    }
+    
+    public void export_all() {
+        Cursor c = Database.query(TABLE_GAME_EVENTS, null, null, null, null, null, null);
+        while (c.moveToNext()) {
+            GameEvent ge = cursorToGameEvent(c);
+            ge.export();
+        }
+    }
+    
+    protected static GameEvent cursorToGameEvent(Cursor c) {
+        int timestamp = c.getInt(c.getColumnIndex(COLUMN_TIMESTAMP));
+        long player_id = c.getLong(c.getColumnIndex(COLUMN_PLAYER_ID));
+        long game_id = c.getLong(c.getColumnIndex(COLUMN_GAME_ID));
+        int event_type = c.getInt(c.getColumnIndex(COLUMN_EVENT_TYPE));
+        int event_subtype = c.getInt(c.getColumnIndex(COLUMN_EVENT_SUBTYPE));
+        long other_player_id = c.getLong(c.getColumnIndex(COLUMN_OTHER_PLAYER_ID));
+        return new GameEvent(timestamp, player_id, game_id, event_type, event_subtype, other_player_id);
     }
 
 }
