@@ -18,5 +18,6 @@
     <string name="menu_foul">Foul</string>
     <string name="menu_yellow_card">Yellow Card</string>
     <string name="menu_red_card">Red Card</string>
+    <string name="menu_swap">Swap -></string>
 
 </resources>

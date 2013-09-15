@@ -21,6 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
     private static final int SUBS_MENU_GROUP = 42;
+    private static final int SWAP_MENU_GROUP = 43;
 
     private static final String LOG_TAG = "Main";
 
@@ -135,6 +136,17 @@ public class MainActivity extends Activity {
                         ((TextView) v).setText(item.getTitle());
                         return true;
                     }
+                    if (item.getGroupId() == SWAP_MENU_GROUP) {
+                        Player p1 = FieldPlayers.get((long) v.getId());
+                        Player p2 = FieldPlayers.get((long) item.getItemId());
+                        // swap
+                        FieldPlayers.put((long) v.getId(), p2);
+                        FieldPlayers.put((long) item.getItemId(), p1);
+                        ((TextView) v).setText(item.getTitle());
+                        ((TextView) findViewById(item.getItemId())).setText(p1.FirstName + " "
+                                + p1.LastName);
+                        return true;
+                    }
                     Player p = null;
                     if (FieldPlayers.containsKey((long) v.getId()))
                         p = FieldPlayers.get((long) v.getId());
@@ -143,7 +155,7 @@ public class MainActivity extends Activity {
                     GameEvent ge = null;
                     switch (item.getItemId()) {
 
-                        case R.id.substitution:
+                        case R.id.substitution: {
                             // Create a submenu with the available players to
                             // sub in
                             SubMenu subMenu = item.getSubMenu();
@@ -153,6 +165,20 @@ public class MainActivity extends Activity {
                                                 + SubbedPlayers.get(i).LastName);
                             }
                             return true;
+                        }
+
+                        case R.id.swap: {
+                            // create a submenu with the other field players
+                            SubMenu subMenu = item.getSubMenu();
+                            for (long i : FieldPlayers.keySet()) {
+                                if (i == (long) v.getId())
+                                    continue;
+                                subMenu.add(SWAP_MENU_GROUP, (int) i, Menu.NONE,
+                                        FieldPlayers.get(i).FirstName + " "
+                                                + FieldPlayers.get(i).LastName);
+                            }
+                            return true;
+                        }
 
                         case R.id.gk_conceded:
                             // create event and update away team score

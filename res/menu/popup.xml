@@ -72,11 +72,18 @@
                 android:title="@string/menu_red_card"/>
         </menu>
     </item>
-        <item
+    <item
         android:id="@+id/substitution"
         android:title="@string/menu_substitution">
 
         <!-- substitutes submenu; dynamically populate -->
+        <menu>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/swap"
+        android:title="@string/menu_swap">
+        <!-- swap submenu; dynamically populate -->
         <menu>
         </menu>
     </item>
