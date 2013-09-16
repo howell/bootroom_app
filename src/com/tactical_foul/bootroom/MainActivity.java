@@ -223,7 +223,7 @@ public class MainActivity extends Activity {
                             if (p == null)
                                 return false;
                             ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.PASS, GameEvent.ASSIST, Player.NONE);
+                                    GameEvent.PASS, GameEvent.PASS_KEY, Player.NONE);
                             break;
 
                         case R.id.shot_on_target:
