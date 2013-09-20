@@ -86,7 +86,7 @@ public class Connectivity {
         int response;
         String contentAsString;
         response = conn.getResponseCode();
-        Log.e(TAG, "Response Code = " + response);
+        Log.d(TAG, "Response Code = " + response);
         InputStream is = conn.getInputStream();
         // Convert the InputStream into a string
         contentAsString = Connectivity.readIt(is);

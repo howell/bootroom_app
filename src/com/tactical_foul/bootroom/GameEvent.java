@@ -84,7 +84,7 @@ public class GameEvent {
     }
 
     protected class ExportTask extends AsyncTask<GameEvent, Void, Void> {
-        private final static String EXPORT_URL = "http://safe-springs-3544.herokuapp.com/game_events/";
+        private final static String EXPORT_URL = "http://beams.herokuapp.com/game_events/";
         private final static String TIMESTAMP_KEY = "game_event[timestamp]";
         private final static String PLAYER_ID_KEY = "game_event[player_id]";
         private final static String GAME_ID_KEY = "game_event[game_id]";
