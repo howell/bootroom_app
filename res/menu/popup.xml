@@ -2,13 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/pass_completed"
+        android:title="Pass Completed"/>
+    <item
         android:id="@+id/pass"
         android:title="Pass ->">
 
         <!-- pass submenu -->
         <menu>
             <item
-                android:id="@+id/pass_completed"
+                android:id="@id/pass_completed"
                 android:title="Completed"/>
             <item
                 android:id="@+id/pass_incompleted"
@@ -83,6 +86,7 @@
     <item
         android:id="@+id/swap"
         android:title="@string/menu_swap">
+
         <!-- swap submenu; dynamically populate -->
         <menu>
         </menu>

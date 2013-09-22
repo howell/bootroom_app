@@ -59,13 +59,13 @@ public class MainActivity extends Activity {
         tvAwayTeam = (TextView) findViewById(R.id.away_team);
         HomeTeam = Team.createTheBeams();
         tvHomeTeam.setText(HomeTeam.Name);
-        tvAwayTeam.setText("DDozen");
+        tvAwayTeam.setText("Real Austin");
         SubbedPlayers = new HashMap<Long, Player>();
         for (int i = 0; i < HomeTeam.Roster.length; ++i) {
             SubbedPlayers.put(HomeTeam.Roster[i].id, HomeTeam.Roster[i]);
         }
         FieldPlayers = new HashMap<Long, Player>();
-        CurrentGame = new Game(2, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
+        CurrentGame = new Game(3, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
         GameEventDB = new GameEventDatabase(this);
     }
 
@@ -88,7 +88,7 @@ public class MainActivity extends Activity {
                 break;
 
             case R.id.action_export_beams:
-                HomeTeam.export();
+                // HomeTeam.export();
                 break;
 
             case R.id.action_export_game:
