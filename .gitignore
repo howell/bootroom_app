@@ -3,3 +3,4 @@ gen/*
 libs/*
 .idea/
 Bootroom.iml
+out/
