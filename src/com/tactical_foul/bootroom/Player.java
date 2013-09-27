@@ -34,17 +34,17 @@ public class Player extends Exportable {
     }
 
     @Override
-    String logTag() {
+    protected String logTag() {
         return LOG_TAG;
     }
 
     @Override
-    String exportURL() {
+    protected String exportURL() {
         return extendURL("/players");
     }
 
     @Override
-    List<NameValuePair> getPostParams() {
+    protected List<NameValuePair> getPostParams() {
         List<NameValuePair> postParams = new ArrayList<NameValuePair>();
         postParams.add(new BasicNameValuePair("player[first_name]", String.valueOf(FirstName)));
         postParams.add(new BasicNameValuePair("player[last_name]", String.valueOf(LastName)));

@@ -14,7 +14,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-public class GameEvent {
+public class GameEvent extends Exportable {
     private final static String LOG_TAG = "GameEvent";
     /* Event Types */
 
@@ -78,53 +78,26 @@ public class GameEvent {
         ++Id_Count;
     }
 
-    public void export() {
-        ExportTask et = new ExportTask();
-        et.execute(this);
+    @Override
+    protected String exportURL() {
+        return extendURL("/game_events");
     }
 
-    protected class ExportTask extends AsyncTask<GameEvent, Void, Void> {
-        private final static String EXPORT_URL = "http://beams.herokuapp.com/game_events/";
-        private final static String TIMESTAMP_KEY = "game_event[timestamp]";
-        private final static String PLAYER_ID_KEY = "game_event[player_id]";
-        private final static String GAME_ID_KEY = "game_event[game_id]";
-        private final static String EVENT_TYPE_KEY = "game_event[event_type]";
-        private final static String EVENT_SUBTYPE_KEY = "game_event[event_subtype]";
-        private final static String OTHER_PLAYER_ID_KEY = "game_event[other_player_id";
+    @Override
+    protected List<NameValuePair> getPostParams() {
+        List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+        postParams.add(new BasicNameValuePair("game_event[timestamp]", String.valueOf(Timestamp)));
+        postParams.add(new BasicNameValuePair("game_event[player_id]", String.valueOf(Player_id)));
+        postParams.add(new BasicNameValuePair("game_event[game_id]", String.valueOf(Game_id)));
+        postParams.add(new BasicNameValuePair("game_event[event_type]", String.valueOf(EventType)));
+        postParams.add(new BasicNameValuePair("game_event[event_subtype]", String.valueOf(EventSubType)));
+        postParams.add(new BasicNameValuePair("game_event[other_player_id", String.valueOf(OtherPlayer_id)));
+        return postParams;
+    }
 
-        @Override
-        protected Void doInBackground(GameEvent... args) {
-            if (args.length == 0)
-                return null;
-            GameEvent ge = args[0];
-            String contentAsString = "";
-            try {
-                HttpURLConnection conn = Connectivity.openURL(EXPORT_URL, "POST");
-                List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-                postParams.add(new BasicNameValuePair(TIMESTAMP_KEY, String.valueOf(ge.Timestamp)));
-                postParams.add(new BasicNameValuePair(PLAYER_ID_KEY, String.valueOf(ge.Player_id)));
-                postParams.add(new BasicNameValuePair(GAME_ID_KEY, String.valueOf(ge.Game_id)));
-                postParams.add(new BasicNameValuePair(EVENT_TYPE_KEY, String.valueOf(ge.EventType)));
-                postParams.add(new BasicNameValuePair(EVENT_SUBTYPE_KEY, String.valueOf(ge.EventSubType)));
-                postParams.add(new BasicNameValuePair(OTHER_PLAYER_ID_KEY, String.valueOf(ge.OtherPlayer_id)));
-                Connectivity.postContent(conn, postParams);
-                conn.connect();
-                // read the response
-                contentAsString = Connectivity.readResponse(conn);
-            } catch (MalformedURLException e) {
-                contentAsString = "Malformed URL error";
-                e.printStackTrace();
-            } catch (IOException e) {
-                contentAsString = "IO error";
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void arg) {
-            Log.d(LOG_TAG, "finished export");
-        }
+    @Override
+    protected String logTag() {
+        return LOG_TAG;
     }
 
 }

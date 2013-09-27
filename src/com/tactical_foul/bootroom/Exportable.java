@@ -35,17 +35,17 @@ public abstract class Exportable {
     /**
      * Returns the url to send export data to as a String
      */
-    abstract String exportURL();
+    protected abstract String exportURL();
 
     /**
      * Get the data to include in the export post request as a list of key, value pairs
      */
-    abstract List<NameValuePair> getPostParams();
+    protected abstract List<NameValuePair> getPostParams();
 
     /**
      * @return the string to be used as a log tag in the export task
      */
-    abstract String logTag();
+    protected abstract String logTag();
 
     private class ExportTask extends AsyncTask<Void, Void, Void> {
 
