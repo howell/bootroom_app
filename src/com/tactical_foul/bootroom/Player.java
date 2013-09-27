@@ -35,6 +35,10 @@ public class Player {
         Email = email;
         Team_id = team_id;
     }
+
+    public String fullName() {
+        return FirstName + " " + LastName;
+    }
     
     public void export() {
         ExportTask et = new ExportTask();

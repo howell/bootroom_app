@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
     // map of player_id -> player
     private Map<Long, Player> SubbedPlayers;
     // map of button id -> player at that position
-    private Map<Long, Player> FieldPlayers;
+    private Map<Integer, Player> FieldPlayers;
 
     /* databases */
     GameEventDatabase GameEventDB;
@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
         for (int i = 0; i < HomeTeam.Roster.length; ++i) {
             SubbedPlayers.put(HomeTeam.Roster[i].id, HomeTeam.Roster[i]);
         }
-        FieldPlayers = new HashMap<Long, Player>();
+        FieldPlayers = new HashMap<Integer, Player>();
         CurrentGame = new Game(3, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
         GameEventDB = new GameEventDatabase(this);
     }
@@ -119,8 +119,8 @@ public class MainActivity extends Activity {
                         }
                         // Don't generate an event if there isn't a player
                         // coming off - assume the initial lineup is being set
-                        if (FieldPlayers.containsKey((long) v.getId())) {
-                            Player playerOff = FieldPlayers.get((long) v.getId());
+                        if (FieldPlayers.containsKey(v.getId())) {
+                            Player playerOff = FieldPlayers.get(v.getId());
                             GameEvent subOn = new GameEvent(seconds, playerOn.id, CurrentGame.id,
                                     GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_ON, playerOff.id);
                             GameEvent subOff = new GameEvent(seconds, playerOff.id, CurrentGame.id,
@@ -129,7 +129,7 @@ public class MainActivity extends Activity {
                             GameEventDB.addEvent(subOff);
                             SubbedPlayers.put(playerOff.id, playerOff);
                         }
-                        FieldPlayers.put((long) v.getId(), playerOn);
+                        FieldPlayers.put(v.getId(), playerOn);
                         SubbedPlayers.remove(playerOn.id);
                         Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT)
                                 .show();
@@ -137,19 +137,19 @@ public class MainActivity extends Activity {
                         return true;
                     }
                     if (item.getGroupId() == SWAP_MENU_GROUP) {
-                        Player p1 = FieldPlayers.get((long) v.getId());
-                        Player p2 = FieldPlayers.get((long) item.getItemId());
+                        Player p1 = FieldPlayers.get(v.getId());
+                        Player p2 = FieldPlayers.get(item.getItemId());
                         // swap
-                        FieldPlayers.put((long) v.getId(), p2);
-                        FieldPlayers.put((long) item.getItemId(), p1);
+                        FieldPlayers.put(v.getId(), p2);
+                        FieldPlayers.put(item.getItemId(), p1);
                         ((TextView) v).setText(item.getTitle());
                         ((TextView) findViewById(item.getItemId())).setText(p1.FirstName + " "
                                 + p1.LastName);
                         return true;
                     }
                     Player p = null;
-                    if (FieldPlayers.containsKey((long) v.getId()))
-                        p = FieldPlayers.get((long) v.getId());
+                    if (FieldPlayers.containsKey(v.getId()))
+                        p = FieldPlayers.get(v.getId());
                     else
                         Log.w(LOG_TAG, "no player!");
                     GameEvent ge = null;
@@ -161,8 +161,7 @@ public class MainActivity extends Activity {
                             SubMenu subMenu = item.getSubMenu();
                             for (long i : SubbedPlayers.keySet()) {
                                 subMenu.add(SUBS_MENU_GROUP, (int) i, Menu.NONE,
-                                        SubbedPlayers.get(i).FirstName + " "
-                                                + SubbedPlayers.get(i).LastName);
+                                        SubbedPlayers.get(i).fullName());
                             }
                             return true;
                         }
@@ -174,8 +173,7 @@ public class MainActivity extends Activity {
                                 if (i == (long) v.getId())
                                     continue;
                                 subMenu.add(SWAP_MENU_GROUP, (int) i, Menu.NONE,
-                                        FieldPlayers.get(i).FirstName + " "
-                                                + FieldPlayers.get(i).LastName);
+                                        FieldPlayers.get(i).fullName());
                             }
                             return true;
                         }
