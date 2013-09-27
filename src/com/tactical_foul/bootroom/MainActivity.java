@@ -88,7 +88,10 @@ public class MainActivity extends Activity {
                 break;
 
             case R.id.action_export_beams:
-                // HomeTeam.export();
+//                GameEvent ge = new GameEvent(1337, 1000, 50, 228,
+//                        GameEvent.SHOT, GameEvent.GOAL, Player.NONE);
+//                Player test = new Player(50, "thierry", "henry", 14, "titi@gmail.com", 7);
+//                ge.export();
                 break;
 
             case R.id.action_export_game:

@@ -12,7 +12,9 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.os.AsyncTask;
 
-public class Game {
+public class Game extends Exportable {
+
+    public static final String LOG_TAG = "Game";
     
     public static final int NONE = 0;
 
@@ -30,45 +32,25 @@ public class Game {
         HomeTeamFinalScore = homeTeamFinalScore;
         AwayTeamFinalScore = awayTeamFinalScore;
     }
-    
-    public void export() {
-        ExportTask et = new ExportTask();
-        et.execute(this);
-    }
-    
-    protected class ExportTask extends AsyncTask<Game, Void, Void> {
-        private final static String EXPORT_URL = "http://beams.herokuapp.com/games/";
-        private final static String HOME_TEAM_ID_KEY = "game[home_team_id]";
-        private final static String AWAY_TEAM_ID_KEY = "game[away_team_id]";
-        private final static String HOME_FINAL_SCORE_KEY = "game[home_final_score]";
-        private final static String AWAY_FINAL_SCORE_KEY = "game[away_final_score]";
 
-        @Override
-        protected Void doInBackground(Game... args) {
-            if (args.length == 0)
-                return null;
-            Game g = args[0];
-            String contentAsString = "";
-            try {
-                HttpURLConnection conn = Connectivity.openURL(EXPORT_URL, "POST");
-                List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-                postParams.add(new BasicNameValuePair(HOME_TEAM_ID_KEY, String.valueOf(g.HomeTeam_id)));
-                postParams.add(new BasicNameValuePair(AWAY_TEAM_ID_KEY, String.valueOf(g.AwayTeam_id)));
-                postParams.add(new BasicNameValuePair(HOME_FINAL_SCORE_KEY, String.valueOf(g.HomeTeamFinalScore)));
-                postParams.add(new BasicNameValuePair(AWAY_FINAL_SCORE_KEY, String.valueOf(g.AwayTeamFinalScore)));
-                Connectivity.postContent(conn, postParams);
-                conn.connect();
-                // read the response
-                contentAsString = Connectivity.readResponse(conn);
-            } catch (MalformedURLException e) {
-                contentAsString = "Malformed URL error";
-                e.printStackTrace();
-            } catch (IOException e) {
-                contentAsString = "IO error";
-                e.printStackTrace();
-            }
-            return null;
-        }
+    @Override
+    protected String exportURL() {
+        return extendURL("/games");
+    }
+
+    @Override
+    protected List<NameValuePair> getPostParams() {
+        List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+        postParams.add(new BasicNameValuePair("game[home_team_id]", String.valueOf(HomeTeam_id)));
+        postParams.add(new BasicNameValuePair("game[away_team_id]", String.valueOf(AwayTeam_id)));
+        postParams.add(new BasicNameValuePair("game[home_final_score]", String.valueOf(HomeTeamFinalScore)));
+        postParams.add(new BasicNameValuePair("game[away_final_score]", String.valueOf(AwayTeamFinalScore)));
+        return postParams;
+    }
+
+    @Override
+    protected String logTag() {
+        return LOG_TAG;
     }
 
 }

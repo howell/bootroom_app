@@ -16,7 +16,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class Team {
+public class Team extends Exportable {
     private static final String LOG_TAG = "Team";
     
     public static final int NONE = 0;
@@ -36,59 +36,30 @@ public class Team {
     public Team(int id, String name, String league) {
         this(id, name, league, new Player[0]);
     }
-    
+
+    @Override
     public void export() {
-        ExportTask et = new ExportTask();
-        et.execute(this);
+        super.export();
+        for (Player p : Roster)
+            p.export();
     }
-    
-    protected class ExportTask extends AsyncTask<Team, Void, Void> {
-        private final static String EXPORT_URL = "http://beams.herokuapp.com/teams/";
-        private final static String NAME_KEY = "team[name]";
-        private final static String LEAGUE_KEY = "team[league]";
 
-        @Override
-        protected Void doInBackground(Team... args) {
-            if (args.length == 0)
-                return null;
-            Team t = args[0];
-            String contentAsString = "";
-            try {
-                HttpURLConnection conn = Connectivity.openURL(EXPORT_URL, "POST");
-                List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-                postParams.add(new BasicNameValuePair(NAME_KEY, String.valueOf(t.Name)));
-                postParams.add(new BasicNameValuePair(LEAGUE_KEY, String.valueOf(t.League)));
-                Connectivity.postContent(conn, postParams);
-                conn.connect();
-                // read the response
-                contentAsString = Connectivity.readResponse(conn);
-                if (conn.getResponseCode() < 400) {
-                    List<HttpCookie> cookies = Connectivity.mCookieManager.getCookieStore().getCookies();
-                    for (HttpCookie c : cookies) {
-                        if (c.getName().equals("team_id")) {
-                            t.id = Long.parseLong(c.getValue());
-                            Log.d(LOG_TAG, "Read cookie id: " + t.id);
-                            for (int i = 0; i < t.Roster.length; ++i) {
-                                t.Roster[i].Team_id = t.id;
-                                t.Roster[i].export();
-                            }
-                        }
-                    }
-                }
-            } catch (MalformedURLException e) {
-                contentAsString = "Malformed URL error";
-                e.printStackTrace();
-            } catch (IOException e) {
-                contentAsString = "IO error";
-                e.printStackTrace();
-            }
-            return null;
-        }
+    @Override
+    protected String exportURL() {
+        return extendURL("/teams");
+    }
 
-        @Override
-        protected void onPostExecute(Void arg) {
-            Log.d(LOG_TAG, "finished export");
-        }
+    @Override
+    protected List<NameValuePair> getPostParams() {
+        List<NameValuePair> postParams = new ArrayList<NameValuePair>();
+        postParams.add(new BasicNameValuePair("team[name]", String.valueOf(Name)));
+        postParams.add(new BasicNameValuePair("team[league]", String.valueOf(League)));
+        return postParams;
+    }
+
+    @Override
+    protected String logTag() {
+        return LOG_TAG;
     }
 
     public static Team createTheBeams() {
