@@ -81,6 +81,8 @@
 
         <!-- substitutes submenu; dynamically populate -->
         <menu>
+            <group
+                    android:id="@+id/popup_subs_menu_group" />
         </menu>
     </item>
     <item
@@ -89,6 +91,8 @@
 
         <!-- swap submenu; dynamically populate -->
         <menu>
+            <group
+                android:id="@+id/popup_swap_menu_group" />
         </menu>
     </item>
 

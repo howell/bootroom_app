@@ -20,10 +20,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    private static final int SUBS_MENU_GROUP = 42;
-    private static final int SWAP_MENU_GROUP = 43;
-
-    private static final String LOG_TAG = "Main";
+    private static final String LOG_TAG = "BootroomMain";
 
     private Button bST, bCF, bLW, bLCM, bRCM, bRW, bLB, bLCB, bRCB, bRB, bGK;
     private TextView tvClock;
@@ -59,13 +56,13 @@ public class MainActivity extends Activity {
         tvAwayTeam = (TextView) findViewById(R.id.away_team);
         HomeTeam = Team.createTheBeams();
         tvHomeTeam.setText(HomeTeam.Name);
-        tvAwayTeam.setText("Real Austin");
+        tvAwayTeam.setText("Cervezas");
         SubbedPlayers = new HashMap<Long, Player>();
         for (int i = 0; i < HomeTeam.Roster.length; ++i) {
             SubbedPlayers.put(HomeTeam.Roster[i].id, HomeTeam.Roster[i]);
         }
         FieldPlayers = new HashMap<Integer, Player>();
-        CurrentGame = new Game(3, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
+        CurrentGame = new Game(4, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
         GameEventDB = new GameEventDatabase(this);
     }
 
@@ -114,7 +111,7 @@ public class MainActivity extends Activity {
 
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getGroupId() == SUBS_MENU_GROUP) {
+                    if (item.getGroupId() == R.id.popup_subs_menu_group) {
                         Player playerOn = SubbedPlayers.get((long) item.getItemId());
                         if (playerOn == null) {
                             Log.e(LOG_TAG, "tried to sub on null!");
@@ -139,7 +136,7 @@ public class MainActivity extends Activity {
                         ((TextView) v).setText(item.getTitle());
                         return true;
                     }
-                    if (item.getGroupId() == SWAP_MENU_GROUP) {
+                    if (item.getGroupId() == R.id.popup_swap_menu_group) {
                         Player p1 = FieldPlayers.get(v.getId());
                         Player p2 = FieldPlayers.get(item.getItemId());
                         // swap
@@ -159,11 +156,10 @@ public class MainActivity extends Activity {
                     switch (item.getItemId()) {
 
                         case R.id.substitution: {
-                            // Create a submenu with the available players to
-                            // sub in
+                            // Create a submenu with the available subs
                             SubMenu subMenu = item.getSubMenu();
                             for (long i : SubbedPlayers.keySet()) {
-                                subMenu.add(SUBS_MENU_GROUP, (int) i, Menu.NONE,
+                                subMenu.add(R.id.popup_subs_menu_group, (int) i, Menu.NONE,
                                         SubbedPlayers.get(i).fullName());
                             }
                             return true;
@@ -172,10 +168,10 @@ public class MainActivity extends Activity {
                         case R.id.swap: {
                             // create a submenu with the other field players
                             SubMenu subMenu = item.getSubMenu();
-                            for (long i : FieldPlayers.keySet()) {
-                                if (i == (long) v.getId())
+                            for (int i : FieldPlayers.keySet()) {
+                                if (i == v.getId())
                                     continue;
-                                subMenu.add(SWAP_MENU_GROUP, (int) i, Menu.NONE,
+                                subMenu.add(R.id.popup_swap_menu_group, i, Menu.NONE,
                                         FieldPlayers.get(i).fullName());
                             }
                             return true;

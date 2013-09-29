@@ -15,7 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class GameEvent extends Exportable {
-    private final static String LOG_TAG = "GameEvent";
+    private final static String LOG_TAG = "BootroomGameEvent";
     /* Event Types */
 
     /* Primary Types */

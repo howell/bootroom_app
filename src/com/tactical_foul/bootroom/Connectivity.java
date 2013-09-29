@@ -33,7 +33,7 @@ public class Connectivity {
 
     protected final static String CHARSET = "UTF-8";
 
-    private final static String TAG = "Connectivity";
+    private final static String TAG = "BootroomConnectivity";
 
     // response keys
     public final static String SUCCESS_TOKEN = "0";

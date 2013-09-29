@@ -14,7 +14,7 @@ import android.os.AsyncTask;
 
 public class Game extends Exportable {
 
-    public static final String LOG_TAG = "Game";
+    public static final String LOG_TAG = "BootroomGame";
     
     public static final int NONE = 0;
 

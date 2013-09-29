@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Player extends Exportable {
 
-    private static final String LOG_TAG = "Player";
+    private static final String LOG_TAG = "BootroomPlayer";
 
     public static final int NONE = 0;
 

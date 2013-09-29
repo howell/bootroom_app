@@ -17,7 +17,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class Team extends Exportable {
-    private static final String LOG_TAG = "Team";
+    private static final String LOG_TAG = "BootroomTeam";
     
     public static final int NONE = 0;
 

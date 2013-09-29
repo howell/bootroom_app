@@ -10,7 +10,7 @@ import android.util.Log;
 
 public class GameEventDatabase extends SQLiteOpenHelper {
 
-    private static final String LOG_TAG = "GameEvent DB";
+    private static final String LOG_TAG = "BootroomGameEventDB";
 
     /* sql database name */
     public static final String TABLE_GAME_EVENTS = "game_events";
