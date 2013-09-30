@@ -19,5 +19,8 @@
     <string name="menu_yellow_card">Yellow Card</string>
     <string name="menu_red_card">Red Card</string>
     <string name="menu_swap">Swap -></string>
+    <string name="menu_interception">Interception</string>
+    <string name="menu_clearance">Clearance</string>
+    <string name="menu_dribble">Dribble</string>
 
 </resources>

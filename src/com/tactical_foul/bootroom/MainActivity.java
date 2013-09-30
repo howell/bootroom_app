@@ -226,6 +226,12 @@ public class MainActivity extends Activity {
                 return GameEvent.SHOT;
             case R.id.tackle:
                 return GameEvent.TACKLE;
+            case R.id.interception:
+                return GameEvent.INTERCEPTION;
+            case R.id.clearance:
+                return GameEvent.CLEARANCE;
+            case R.id.dribble:
+                return GameEvent.DRIBBLE;
             case R.id.foul:
                 return GameEvent.FOUL;
             case R.id.yellow_card:

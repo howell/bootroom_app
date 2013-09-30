@@ -27,6 +27,9 @@ public class GameEvent extends Exportable {
     public final static int FOUL = 6;
     public final static int YELLOW_CARD = 7;
     public final static int RED_CARD = 8;
+    public final static int INTERCEPTION = 9;
+    public final static int CLEARANCE = 10;
+    public final static int DRIBBLE = 11;
 
     /* Pass Sub-Types */
     public final static int PASS_COMPLETED = 1;
