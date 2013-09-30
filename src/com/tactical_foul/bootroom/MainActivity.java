@@ -111,200 +111,163 @@ public class MainActivity extends Activity {
 
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    if (item.getGroupId() == R.id.popup_subs_menu_group) {
-                        Player playerOn = SubbedPlayers.get((long) item.getItemId());
-                        if (playerOn == null) {
-                            Log.e(LOG_TAG, "tried to sub on null!");
-                            return false;
+                    // there are two basic categories of menu items:
+                    //  1) those where we need to dynamically generate a further menu (e.g. sub, swap)
+                    //  2) those where we need to carry out some action, like record a game-event or change position
+                    if (item.getItemId() == R.id.swap) {
+                        // create a submenu with the other field players
+                        SubMenu subMenu = item.getSubMenu();
+                        for (int i : FieldPlayers.keySet()) {
+                            if (i == v.getId())  // skip the current player
+                                continue;
+                            subMenu.add(R.id.popup_swap_menu_group, i, Menu.NONE,
+                                    FieldPlayers.get(i).fullName());
                         }
-                        // Don't generate an event if there isn't a player
-                        // coming off - assume the initial lineup is being set
-                        if (FieldPlayers.containsKey(v.getId())) {
-                            Player playerOff = FieldPlayers.get(v.getId());
-                            GameEvent subOn = new GameEvent(seconds, playerOn.id, CurrentGame.id,
-                                    GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_ON, playerOff.id);
-                            GameEvent subOff = new GameEvent(seconds, playerOff.id, CurrentGame.id,
-                                    GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_OFF, playerOn.id);
-                            GameEventDB.addEvent(subOn);
-                            GameEventDB.addEvent(subOff);
-                            SubbedPlayers.put(playerOff.id, playerOff);
-                        }
-                        FieldPlayers.put(v.getId(), playerOn);
-                        SubbedPlayers.remove(playerOn.id);
-                        Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT)
-                                .show();
-                        ((TextView) v).setText(item.getTitle());
                         return true;
                     }
-                    if (item.getGroupId() == R.id.popup_swap_menu_group) {
-                        Player p1 = FieldPlayers.get(v.getId());
-                        Player p2 = FieldPlayers.get(item.getItemId());
-                        // swap
-                        FieldPlayers.put(v.getId(), p2);
-                        FieldPlayers.put(item.getItemId(), p1);
-                        ((TextView) v).setText(item.getTitle());
-                        ((TextView) findViewById(item.getItemId())).setText(p1.FirstName + " "
-                                + p1.LastName);
+                    if (item.getItemId() == R.id.substitution) {
+                        // Create a submenu with the available players to sub in
+                        SubMenu subMenu = item.getSubMenu();
+                        for (long i : SubbedPlayers.keySet())
+                            subMenu.add(R.id.popup_subs_menu_group, (int) i, Menu.NONE,
+                                    SubbedPlayers.get(i).fullName());
                         return true;
                     }
-                    Player p = null;
-                    if (FieldPlayers.containsKey(v.getId()))
-                        p = FieldPlayers.get(v.getId());
-                    else
-                        Log.w(LOG_TAG, "no player!");
-                    GameEvent ge = null;
-                    switch (item.getItemId()) {
-
-                        case R.id.substitution: {
-                            // Create a submenu with the available subs
-                            SubMenu subMenu = item.getSubMenu();
-                            for (long i : SubbedPlayers.keySet()) {
-                                subMenu.add(R.id.popup_subs_menu_group, (int) i, Menu.NONE,
-                                        SubbedPlayers.get(i).fullName());
+                    switch (item.getGroupId()) {
+                        case R.id.popup_subs_menu_group : {
+                            Player playerOn = SubbedPlayers.get((long) item.getItemId());
+                            if (playerOn == null) {
+                                Log.e(LOG_TAG, "tried to sub on null!");
+                                return false;
                             }
+                            // Don't generate an event if there isn't a player
+                            // coming off - assume the initial lineup is being set
+                            if (FieldPlayers.containsKey(v.getId())) {
+                                Player playerOff = FieldPlayers.get(v.getId());
+                                GameEvent subOn = new GameEvent(seconds, playerOn.id, CurrentGame.id,
+                                        GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_ON, playerOff.id);
+                                GameEvent subOff = new GameEvent(seconds, playerOff.id, CurrentGame.id,
+                                        GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_OFF, playerOn.id);
+                                GameEventDB.addEvent(subOn);
+                                GameEventDB.addEvent(subOff);
+                                SubbedPlayers.put(playerOff.id, playerOff);
+                            }
+                            FieldPlayers.put(v.getId(), playerOn);
+                            SubbedPlayers.remove(playerOn.id);
+                            Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT)
+                                    .show();
+                            ((TextView) v).setText(item.getTitle());
                             return true;
                         }
 
-                        case R.id.swap: {
-                            // create a submenu with the other field players
-                            SubMenu subMenu = item.getSubMenu();
-                            for (int i : FieldPlayers.keySet()) {
-                                if (i == v.getId())
-                                    continue;
-                                subMenu.add(R.id.popup_swap_menu_group, i, Menu.NONE,
-                                        FieldPlayers.get(i).fullName());
-                            }
+                        case R.id.popup_swap_menu_group : {
+                            Player p1 = FieldPlayers.get(v.getId());
+                            Player p2 = FieldPlayers.get(item.getItemId());
+                            // swap
+                            FieldPlayers.put(v.getId(), p2);
+                            FieldPlayers.put(item.getItemId(), p1);
+                            ((TextView) v).setText(item.getTitle());
+                            ((TextView) findViewById(item.getItemId())).setText(p1.FirstName + " "
+                                    + p1.LastName);
                             return true;
                         }
 
-                        case R.id.gk_conceded:
-                            // create event and update away team score
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.SHOT_AGAINST, GameEvent.CONCEDED, Player.NONE);
-                            ++AwayScore;
-                            tvAwayScore.setText(Integer.toString(AwayScore));
-                            break;
-
-                        case R.id.gk_save:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.SHOT_AGAINST, GameEvent.SAVE, Player.NONE);
-
-                            break;
-
-                        case R.id.pass_completed:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.PASS, GameEvent.PASS_COMPLETED, Player.NONE);
-                            break;
-
-                        case R.id.pass_incompleted:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.PASS, GameEvent.PASS_INCOMPLETED, Player.NONE);
-                            break;
-
-                        case R.id.pass_assist:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.PASS, GameEvent.ASSIST, Player.NONE);
-                            break;
-
-                        case R.id.pass_key:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.PASS, GameEvent.PASS_KEY, Player.NONE);
-                            break;
-
-                        case R.id.shot_on_target:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.SHOT, GameEvent.SHOT_ON_TARGET, Player.NONE);
-                            break;
-
-                        case R.id.shot_off_target:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.SHOT, GameEvent.SHOT_OFF_TARGET, Player.NONE);
-                            break;
-
-                        case R.id.shot_goal:
-                            if (p == null)
-                                return false;
-                            // update score
-                            ++HomeScore;
-                            tvHomeScore.setText(Integer.toString(HomeScore));
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.SHOT, GameEvent.GOAL, Player.NONE);
-                            break;
-
-                        case R.id.tackle:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.TACKLE, GameEvent.NONE, Player.NONE);
-                            break;
-
-                        case R.id.foul:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.FOUL, GameEvent.NONE, Player.NONE);
-                            break;
-
-                        case R.id.yellow_card:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.YELLOW_CARD, GameEvent.NONE, Player.NONE);
-                            break;
-
-                        case R.id.red_card:
-                            if (p == null)
-                                return false;
-                            ge = new GameEvent(seconds, p.id, CurrentGame.id,
-                                    GameEvent.RED_CARD, GameEvent.NONE, Player.NONE);
-                            break;
-
-                        default:
-                            break;
+                        case R.id.create_event_menu_group : {
+                            GameEvent ge = gameEventFromMenuId(item.getItemId());
+                            Player p = FieldPlayers.get(v.getId());
+                            ge.Player_id = p.id;
+                            GameEventDB.addEvent(ge);
+                            // update score if needed
+                            if(ge.EventSubType == GameEvent.GOAL) {
+                                ++CurrentGame.HomeTeamFinalScore;
+                                tvHomeScore.setText(Integer.toString(CurrentGame.HomeTeamFinalScore));
+                            } else if (ge.EventSubType == GameEvent.CONCEDED) {
+                                ++CurrentGame.AwayTeamFinalScore;
+                                tvAwayScore.setText(Integer.toString(CurrentGame.AwayTeamFinalScore));
+                            }
+                            return true;
+                        }
                     }
-                    if (ge != null)
-                        GameEventDB.addEvent(ge);
-                    return true;
+                    return false;
                 }
-
             });
             pm.inflate(R.menu.popup);
             pm.show();
         }
     }
 
-    /*
-     * formats seconds as mm:ss, including leading 0's
+    /**
+     * Create a game event with the proper type, subtype, and timestamp from the id of a menu item
+     * @param menu_id id of the popupmenu item that was pressed
+     * @return game event with the proper type, subtype, and timestamp from the id of a menu item
      */
-    private String seconds_to_String(int seconds) {
-        int minutes = seconds / 60;
-        int secs = seconds % 60;
-        String fmt = "";
-        if (minutes < 10)
-            fmt += '0';
-        fmt += minutes;
-        fmt += ":";
-        if (secs < 10)
-            fmt += "0";
-        fmt += secs;
-        return fmt;
+    GameEvent gameEventFromMenuId(int menu_id) {
+        long player_id = Player.NONE;
+        int timestamp = seconds;
+        int type = type_for_menu_id(menu_id);
+        int subtype = subtype_for_menu_id(menu_id);
+        long other_player_id = Player.NONE;
+        return new GameEvent(timestamp, player_id, CurrentGame.id, type, subtype, other_player_id);
     }
+
+    /**
+     * Get the game event primary type for a menu item
+     * @param menu_id
+     * @return
+     */
+    int type_for_menu_id(int menu_id) {
+        switch (menu_id) {
+            case R.id.gk_conceded: case R.id.gk_save:
+                return GameEvent.SHOT_AGAINST;
+            case R.id.pass_completed:case R.id.pass_assist:
+            case R.id.pass_incompleted:case R.id.pass_key:
+                return GameEvent.PASS;
+            case R.id.shot_on_target: case R.id.shot_goal:case R.id.shot_off_target:
+                return GameEvent.SHOT;
+            case R.id.tackle:
+                return GameEvent.TACKLE;
+            case R.id.foul:
+                return GameEvent.FOUL;
+            case R.id.yellow_card:
+                return GameEvent.YELLOW_CARD;
+            case R.id.red_card:
+                return GameEvent.RED_CARD;
+            default:
+                Log.w(LOG_TAG, "failed to match menu item to event type!");
+                return GameEvent.NONE;
+        }
+    }
+
+    /**
+     * Get the game event subtype, if it exists, for a menu item
+     * @param menu_id
+     * @return the subtype corresponding for a menu item if it exists, otherwise GameEvent.NONE
+     */
+    int subtype_for_menu_id(int menu_id) {
+        switch (menu_id) {
+            case R.id.gk_conceded:
+                return GameEvent.CONCEDED;
+            case R.id.gk_save:
+                return GameEvent.SAVE;
+            case R.id.pass_completed:
+                return GameEvent.PASS_COMPLETED;
+            case R.id.pass_incompleted:
+                return GameEvent.PASS_INCOMPLETED;
+            case R.id.pass_assist:
+                return GameEvent.ASSIST;
+            case R.id.pass_key:
+                return GameEvent.PASS_KEY;
+            case R.id.shot_on_target:
+                return GameEvent.SHOT_ON_TARGET;
+            case R.id.shot_off_target:
+                return GameEvent.SHOT_OFF_TARGET;
+            case R.id.shot_goal:
+                return GameEvent.GOAL;
+            default:
+                return GameEvent.NONE;
+        }
+    }
+
 
     private void initButtons() {
         PositionButton listener = new PositionButton();
@@ -332,6 +295,10 @@ public class MainActivity extends Activity {
         bGK.setOnClickListener(listener);
     }
 
+    /**
+     * Create a timer that will increment every second and update a text view with the time in the format
+     * MM:SS
+     */
     private void initClock() {
         tvClock = (TextView) findViewById(R.id.clock);
         seconds = 0;
@@ -369,4 +336,20 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * formats seconds as mm:ss, including leading 0's
+     */
+    private String seconds_to_String(int seconds) {
+        int minutes = seconds / 60;
+        int secs = seconds % 60;
+        String fmt = "";
+        if (minutes < 10)
+            fmt += '0';
+        fmt += minutes;
+        fmt += ":";
+        if (secs < 10)
+            fmt += "0";
+        fmt += secs;
+        return fmt;
+    }
 }
