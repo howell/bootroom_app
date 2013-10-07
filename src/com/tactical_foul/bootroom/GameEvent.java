@@ -86,6 +86,22 @@ public class GameEvent extends Exportable {
         return extendURL("/game_events");
     }
 
+    /**
+     * Check if an event represents a goal being conceded
+     * @return true/false
+     */
+    public boolean is_goal_conceded() {
+        return EventType == SHOT_AGAINST && EventSubType == CONCEDED;
+    }
+
+    /**
+     * Check if an event represents a goal being scored
+     * @return true/false
+     */
+    public boolean is_goal_scored() {
+        return EventType == SHOT && EventSubType == GOAL;
+    }
+
     @Override
     protected List<NameValuePair> getPostParams() {
         List<NameValuePair> postParams = new ArrayList<NameValuePair>();

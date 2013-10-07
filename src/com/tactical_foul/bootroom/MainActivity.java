@@ -178,10 +178,10 @@ public class MainActivity extends Activity {
                             ge.Player_id = p.id;
                             GameEventDB.addEvent(ge);
                             // update score if needed
-                            if(ge.EventSubType == GameEvent.GOAL) {
+                            if(ge.is_goal_conceded()) {
                                 ++CurrentGame.HomeTeamFinalScore;
                                 tvHomeScore.setText(Integer.toString(CurrentGame.HomeTeamFinalScore));
-                            } else if (ge.EventSubType == GameEvent.CONCEDED) {
+                            } else if (ge.is_goal_scored()) {
                                 ++CurrentGame.AwayTeamFinalScore;
                                 tvAwayScore.setText(Integer.toString(CurrentGame.AwayTeamFinalScore));
                             }
