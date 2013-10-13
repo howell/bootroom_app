@@ -57,7 +57,6 @@ public class GameEventDatabase extends SQLiteOpenHelper {
 
     public boolean addEvent(GameEvent ge) {
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_ID, ge.id);
         cv.put(COLUMN_TIMESTAMP, ge.Timestamp);
         cv.put(COLUMN_PLAYER_ID, ge.Player_id);
         cv.put(COLUMN_GAME_ID, ge.Game_id);
@@ -68,10 +67,6 @@ public class GameEventDatabase extends SQLiteOpenHelper {
         if (id == -1) {
             Log.e(LOG_TAG, "Error writing DB");
             return false;
-        }
-        if (id != ge.id) {
-            Log.w(LOG_TAG, "unequal id's: " + Long.toString(id) + ", " + Long.toString(ge.id));
-            ge.id = id;
         }
         Log.d(LOG_TAG, "Add Event: " + Long.toString(id));
         return true;

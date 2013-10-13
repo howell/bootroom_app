@@ -53,7 +53,6 @@ public class GameEvent extends Exportable {
     /* for events where there is no other player */
     public final static int NONE = 0;
 
-    public long id;
     public int Timestamp; // in seconds
     public long Player_id;
     public long Game_id;
@@ -62,23 +61,15 @@ public class GameEvent extends Exportable {
                              // completed)
     public long OtherPlayer_id; // if it exists
 
-    private static int Id_Count = 1;
 
-    public GameEvent(long id, int timestamp, long player_id, long game_id, int eventType,
+    public GameEvent(int timestamp, long player_id, long game_id, int eventType,
             int eventSubType, long otherPlayer_id) {
-        this.id = id;
         Timestamp = timestamp;
         Player_id = player_id;
         Game_id = game_id;
         EventType = eventType;
         EventSubType = eventSubType;
         OtherPlayer_id = otherPlayer_id;
-    }
-
-    public GameEvent(int timestamp, long player_id, long game_id, int eventType, int eventSubType,
-            long otherPlayer_id) {
-        this(Id_Count, timestamp, player_id, game_id, eventType, eventSubType, otherPlayer_id);
-        ++Id_Count;
     }
 
     @Override
