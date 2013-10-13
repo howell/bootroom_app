@@ -56,13 +56,13 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
         tvAwayTeam = (TextView) findViewById(R.id.away_team);
         HomeTeam = Team.createTheBeams();
         tvHomeTeam.setText(HomeTeam.Name);
-        tvAwayTeam.setText("Blues");
+        tvAwayTeam.setText("AAC");
         SubbedPlayers = new HashMap<Long, Player>();
         for (int i = 0; i < HomeTeam.Roster.length; ++i) {
             SubbedPlayers.put(HomeTeam.Roster[i].id, HomeTeam.Roster[i]);
         }
         FieldPlayers = new HashMap<Integer, Player>();
-        CurrentGame = new Game(4, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
+        CurrentGame = new Game(5, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
         GameEventDB = new GameEventDatabase(this);
     }
 
