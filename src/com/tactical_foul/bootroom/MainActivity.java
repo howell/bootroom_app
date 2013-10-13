@@ -1,12 +1,8 @@
 
 package com.tactical_foul.bootroom;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,20 +14,24 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class MainActivity extends Activity implements EditGametimeDialogFragment.UpdateTimeListener {
 
     private static final String LOG_TAG = "BootroomMain";
 
     private Button bST, bCF, bLW, bLCM, bRCM, bRW, bLB, bLCB, bRCB, bRB, bGK;
-    private TextView tvClock;
     private TextView tvHomeScore;
     private TextView tvAwayScore;
     private TextView tvHomeTeam;
     private TextView tvAwayTeam;
-    private Timer myTimer;
-    private int seconds = 0;
     private int HomeScore = 0;
     private int AwayScore = 0;
+
+    private GameClock mGameClock;
 
     private Game CurrentGame;
     private Team HomeTeam;
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         Connectivity.init();
         initButtons();
-        initClock();
+        mGameClock = new GameClock((TextView) findViewById(R.id.clock), this);
         tvHomeScore = (TextView) findViewById(R.id.home_score);
         tvAwayScore = (TextView) findViewById(R.id.away_score);
         tvHomeTeam = (TextView) findViewById(R.id.home_team);
@@ -64,6 +64,11 @@ public class MainActivity extends Activity {
         FieldPlayers = new HashMap<Integer, Player>();
         CurrentGame = new Game(4, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
         GameEventDB = new GameEventDatabase(this);
+    }
+
+    @Override
+    public void setTime(int minutes, int seconds) {
+        mGameClock.setTime(minutes, seconds);
     }
 
     @Override
@@ -144,9 +149,9 @@ public class MainActivity extends Activity {
                             // coming off - assume the initial lineup is being set
                             if (FieldPlayers.containsKey(v.getId())) {
                                 Player playerOff = FieldPlayers.get(v.getId());
-                                GameEvent subOn = new GameEvent(seconds, playerOn.id, CurrentGame.id,
+                                GameEvent subOn = new GameEvent(mGameClock.getSeconds(), playerOn.id, CurrentGame.id,
                                         GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_ON, playerOff.id);
-                                GameEvent subOff = new GameEvent(seconds, playerOff.id, CurrentGame.id,
+                                GameEvent subOff = new GameEvent(mGameClock.getSeconds(), playerOff.id, CurrentGame.id,
                                         GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_OFF, playerOn.id);
                                 GameEventDB.addEvent(subOn);
                                 GameEventDB.addEvent(subOff);
@@ -201,9 +206,9 @@ public class MainActivity extends Activity {
      * @param menu_id id of the popupmenu item that was pressed
      * @return game event with the proper type, subtype, and timestamp from the id of a menu item
      */
-    GameEvent gameEventFromMenuId(int menu_id) {
+    private GameEvent gameEventFromMenuId(int menu_id) {
         long player_id = Player.NONE;
-        int timestamp = seconds;
+        int timestamp = mGameClock.getSeconds();
         int type = type_for_menu_id(menu_id);
         int subtype = subtype_for_menu_id(menu_id);
         long other_player_id = Player.NONE;
@@ -301,61 +306,4 @@ public class MainActivity extends Activity {
         bGK.setOnClickListener(listener);
     }
 
-    /**
-     * Create a timer that will increment every second and update a text view with the time in the format
-     * MM:SS
-     */
-    private void initClock() {
-        tvClock = (TextView) findViewById(R.id.clock);
-        seconds = 0;
-        tvClock.setText(seconds_to_String(seconds));
-        tvClock.setOnClickListener(new View.OnClickListener() {
-            private boolean running = false;
-
-            @Override
-            public void onClick(View v) {
-                if (running) {
-                    myTimer.cancel();
-                    running = false;
-                } else {
-                    myTimer = new Timer();
-                    myTimer.scheduleAtFixedRate(new TimerTask() {
-                        @Override
-                        public void run() {
-                            timerUpdate();
-                        }
-                    }, 0, 1000);
-                    running = true;
-                }
-
-            }
-        });
-    }
-
-    private void timerUpdate() {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ++seconds;
-                tvClock.setText(seconds_to_String(seconds));
-            }
-        });
-    }
-
-    /**
-     * formats seconds as mm:ss, including leading 0's
-     */
-    private String seconds_to_String(int seconds) {
-        int minutes = seconds / 60;
-        int secs = seconds % 60;
-        String fmt = "";
-        if (minutes < 10)
-            fmt += '0';
-        fmt += minutes;
-        fmt += ":";
-        if (secs < 10)
-            fmt += "0";
-        fmt += secs;
-        return fmt;
-    }
 }
