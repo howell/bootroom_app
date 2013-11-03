@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
         tvAwayTeam = (TextView) findViewById(R.id.away_team);
         HomeTeam = Team.createTheBeams();
         tvHomeTeam.setText(HomeTeam.Name);
-        tvAwayTeam.setText("AAC");
+        tvAwayTeam.setText("Reds Porch");
         SubbedPlayers = new HashMap<Long, Player>();
         for (int i = 0; i < HomeTeam.Roster.length; ++i) {
             SubbedPlayers.put(HomeTeam.Roster[i].id, HomeTeam.Roster[i]);
@@ -184,11 +184,11 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
                             GameEventDB.addEvent(ge);
                             // update score if needed
                             if(ge.is_goal_conceded()) {
-                                ++CurrentGame.HomeTeamFinalScore;
-                                tvHomeScore.setText(Integer.toString(CurrentGame.HomeTeamFinalScore));
-                            } else if (ge.is_goal_scored()) {
                                 ++CurrentGame.AwayTeamFinalScore;
                                 tvAwayScore.setText(Integer.toString(CurrentGame.AwayTeamFinalScore));
+                            } else if (ge.is_goal_scored()) {
+                                ++CurrentGame.HomeTeamFinalScore;
+                                tvHomeScore.setText(Integer.toString(CurrentGame.HomeTeamFinalScore));
                             }
                             return true;
                         }
