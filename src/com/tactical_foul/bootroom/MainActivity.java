@@ -251,6 +251,12 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
                 return GameEvent.YELLOW_CARD;
             case R.id.red_card:
                 return GameEvent.RED_CARD;
+            case R.id.gk_collect_successful: case R.id.gk_collect_unsuccessful:
+                return GameEvent.GK_COLLECT;
+            case R.id.gk_goal_kick_successful: case R.id.gk_goal_kick_unsuccessful:
+                return GameEvent.GOAL_KICK;
+            case R.id.gk_punt_successful:case R.id.gk_punt_unsuccessful:
+                return GameEvent.PUNT;
             default:
                 Log.w(LOG_TAG, "failed to match menu item to event type!");
                 return GameEvent.NONE;
@@ -282,6 +288,10 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
                 return GameEvent.SHOT_OFF_TARGET;
             case R.id.shot_goal:
                 return GameEvent.GOAL;
+            case R.id.gk_collect_successful: case R.id.gk_goal_kick_successful: case R.id.gk_punt_successful:
+                return GameEvent.GK_SUCCESSFUL;
+            case R.id.gk_collect_unsuccessful: case R.id.gk_goal_kick_unsuccessful: case R.id.gk_punt_unsuccessful:
+                return GameEvent.GK_UNSUCCESSFUL;
             default:
                 return GameEvent.NONE;
         }

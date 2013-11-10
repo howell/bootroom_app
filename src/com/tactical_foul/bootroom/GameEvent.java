@@ -30,6 +30,9 @@ public class GameEvent extends Exportable {
     public final static int INTERCEPTION = 9;
     public final static int CLEARANCE = 10;
     public final static int DRIBBLE = 11;
+    public final static int GK_COLLECT = 12;
+    public final static int PUNT = 13;
+    public final static int GOAL_KICK = 14;
 
     /* Pass Sub-Types */
     public final static int PASS_COMPLETED = 1;
@@ -49,6 +52,10 @@ public class GameEvent extends Exportable {
     /* Shot-Against Sub-Types */
     public final static int SAVE = 1;
     public final static int CONCEDED = 2;
+
+    /* Goalkeeper event Sub-Types */
+    public final static int GK_SUCCESSFUL = 1;
+    public final static int GK_UNSUCCESSFUL = 2;
 
     /* for events where there is no other player */
     public final static int NONE = 0;

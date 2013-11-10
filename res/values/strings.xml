@@ -13,6 +13,12 @@
     <string name="menu_tackle">Tackle</string>
     <string name="menu_gk_menu">GK -></string>
     <string name="menu_gk_save">Save</string>
+    <string name="menu_gk_punt_successful">Punt Successful</string>
+    <string name="menu_gk_punt_unsuccessful">Punt Unsuccessful</string>
+    <string name="menu_gk_goal_kick_successful">Goal Kick Successful</string>
+    <string name="menu_gk_goal_kick_unsuccessful">Goal Kick Unsuccessful</string>
+    <string name="menu_gk_collect_successful">Collect Successful</string>
+    <string name="menu_gk_collect_unsuccessful">Collect Unsuccessful</string>
     <string name="menu_gk_conceded">Conceded</string>
     <string name="menu_disciplinary">Disciplinary -></string>
     <string name="menu_foul">Foul</string>

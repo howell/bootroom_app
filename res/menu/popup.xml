@@ -101,6 +101,24 @@
                 <item
                         android:id="@+id/gk_conceded"
                         android:title="@string/menu_gk_conceded"/>
+                <item
+                        android:id="@+id/gk_punt_successful"
+                        android:title="@string/menu_gk_punt_successful"/>
+                <item
+                        android:id="@+id/gk_punt_unsuccessful"
+                        android:title="@string/menu_gk_punt_unsuccessful"/>
+                <item
+                        android:id="@+id/gk_goal_kick_successful"
+                        android:title="@string/menu_gk_goal_kick_successful"/>
+                <item
+                    android:id="@+id/gk_goal_kick_unsuccessful"
+                    android:title="@string/menu_gk_goal_kick_unsuccessful"/>
+                <item
+                        android:id="@+id/gk_collect_successful"
+                        android:title="@string/menu_gk_collect_successful"/>
+                <item
+                        android:id="@+id/gk_collect_unsuccessful"
+                        android:title="@string/menu_gk_collect_unsuccessful"/>
             </group>
         </menu>
     </item>
