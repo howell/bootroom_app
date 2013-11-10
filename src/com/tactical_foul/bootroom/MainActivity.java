@@ -39,6 +39,8 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
     private Map<Long, Player> SubbedPlayers;
     // map of button id -> player at that position
     private Map<Integer, Player> FieldPlayers;
+    // map of button -> name of position
+    private Map<Button, String> ButtonPositions;
 
     /* databases */
     GameEventDatabase GameEventDB;
@@ -48,7 +50,8 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Connectivity.init();
-        initButtons();
+        //ButtonPositions = new HashMap<Button, String>();
+        ButtonPositions = initButtons();
         mGameClock = new GameClock((TextView) findViewById(R.id.clock), this);
         tvHomeScore = (TextView) findViewById(R.id.home_score);
         tvAwayScore = (TextView) findViewById(R.id.away_score);
@@ -149,10 +152,12 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
                             // coming off - assume the initial lineup is being set
                             if (FieldPlayers.containsKey(v.getId())) {
                                 Player playerOff = FieldPlayers.get(v.getId());
+                                String position = ButtonPositions.get((Button) v);
+                                Log.d(LOG_TAG, "Substiution at position " + position);
                                 GameEvent subOn = new GameEvent(mGameClock.getSeconds(), playerOn.id, CurrentGame.id,
-                                        GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_ON, playerOff.id);
+                                        GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_ON, playerOff.id, position);
                                 GameEvent subOff = new GameEvent(mGameClock.getSeconds(), playerOff.id, CurrentGame.id,
-                                        GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_OFF, playerOn.id);
+                                        GameEvent.SUBSTITUTION, GameEvent.SUBSTITUTION_OFF, playerOn.id, position);
                                 GameEventDB.addEvent(subOn);
                                 GameEventDB.addEvent(subOff);
                                 SubbedPlayers.put(playerOff.id, playerOff);
@@ -181,6 +186,8 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
                             GameEvent ge = gameEventFromMenuId(item.getItemId());
                             Player p = FieldPlayers.get(v.getId());
                             ge.Player_id = p.id;
+                            ge.Position = ButtonPositions.get((Button) v);
+                            Log.d(LOG_TAG, "Event at position " + ge.Position);
                             GameEventDB.addEvent(ge);
                             // update score if needed
                             if(ge.is_goal_conceded()) {
@@ -212,7 +219,8 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
         int type = type_for_menu_id(menu_id);
         int subtype = subtype_for_menu_id(menu_id);
         long other_player_id = Player.NONE;
-        return new GameEvent(timestamp, player_id, CurrentGame.id, type, subtype, other_player_id);
+        String position = "";
+        return new GameEvent(timestamp, player_id, CurrentGame.id, type, subtype, other_player_id, position);
     }
 
     /**
@@ -280,30 +288,43 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
     }
 
 
-    private void initButtons() {
+    private Map<Button, String> initButtons() {
+        Map<Button, String> positionsMap = new HashMap<Button, String>();
         PositionButton listener = new PositionButton();
         bST = (Button) findViewById(R.id.button_st);
+        positionsMap.put(bST, bST.getText().toString());
         bST.setOnClickListener(listener);
         bCF = (Button) findViewById(R.id.button_cf);
+        positionsMap.put(bCF, bCF.getText().toString());
         bCF.setOnClickListener(listener);
         bLW = (Button) findViewById(R.id.button_lw);
+        positionsMap.put(bLW, bLW.getText().toString());
         bLW.setOnClickListener(listener);
         bLCM = (Button) findViewById(R.id.button_lcm);
+        positionsMap.put(bLCM, bLCM.getText().toString());
         bLCM.setOnClickListener(listener);
         bRCM = (Button) findViewById(R.id.button_rcm);
+        positionsMap.put(bRCM, bRCM.getText().toString());
         bRCM.setOnClickListener(listener);
         bRW = (Button) findViewById(R.id.button_rw);
+        positionsMap.put(bRW, bRW.getText().toString());
         bRW.setOnClickListener(listener);
         bLB = (Button) findViewById(R.id.button_lb);
+        positionsMap.put(bLB, bLB.getText().toString());
         bLB.setOnClickListener(listener);
         bLCB = (Button) findViewById(R.id.button_lcb);
+        positionsMap.put(bLCB, bLCB.getText().toString());
         bLCB.setOnClickListener(listener);
         bRCB = (Button) findViewById(R.id.button_rcb);
+        positionsMap.put(bRCB, bRCB.getText().toString());
         bRCB.setOnClickListener(listener);
         bRB = (Button) findViewById(R.id.button_rb);
+        positionsMap.put(bRB, bRB.getText().toString());
         bRB.setOnClickListener(listener);
         bGK = (Button) findViewById(R.id.button_gk);
+        positionsMap.put(bGK, bGK.getText().toString());
         bGK.setOnClickListener(listener);
+        return positionsMap;
     }
 
 }

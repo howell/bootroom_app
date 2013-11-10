@@ -57,19 +57,21 @@ public class GameEvent extends Exportable {
     public long Player_id;
     public long Game_id;
     public int EventType;
-    public int EventSubType; // optional secondary information (e.g. pass
-                             // completed)
+    // optional secondary information (e.g. pass completed)
+    public int EventSubType;
     public long OtherPlayer_id; // if it exists
+    public String Position;
 
 
     public GameEvent(int timestamp, long player_id, long game_id, int eventType,
-            int eventSubType, long otherPlayer_id) {
+            int eventSubType, long otherPlayer_id, String position) {
         Timestamp = timestamp;
         Player_id = player_id;
         Game_id = game_id;
         EventType = eventType;
         EventSubType = eventSubType;
         OtherPlayer_id = otherPlayer_id;
+        Position = position;
     }
 
     @Override
@@ -101,7 +103,8 @@ public class GameEvent extends Exportable {
         postParams.add(new BasicNameValuePair("game_event[game_id]", String.valueOf(Game_id)));
         postParams.add(new BasicNameValuePair("game_event[event_type]", String.valueOf(EventType)));
         postParams.add(new BasicNameValuePair("game_event[event_subtype]", String.valueOf(EventSubType)));
-        postParams.add(new BasicNameValuePair("game_event[other_player_id", String.valueOf(OtherPlayer_id)));
+        postParams.add(new BasicNameValuePair("game_event[other_player_id]", String.valueOf(OtherPlayer_id)));
+        postParams.add(new BasicNameValuePair("game_event[position]", Position));
         return postParams;
     }
 

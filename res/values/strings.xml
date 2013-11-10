@@ -24,5 +24,16 @@
     <string name="menu_dribble">Dribble</string>
     <string name="minutes">Minutes</string>
     <string name="seconds">Seconds</string>
+    <string name="gk_button">GK</string>
+    <string name="lw_button">LW</string>
+    <string name="rw_button">RW</string>
+    <string name="rcm_button">CM</string>
+    <string name="lcm_button">CM</string>
+    <string name="lb_button">LB</string>
+    <string name="rb_button">RB</string>
+    <string name="rcb_button">CB</string>
+    <string name="lcb_button">CB</string>
+    <string name="cf_button">CF</string>
+    <string name="st_button">ST</string>
 
 </resources>

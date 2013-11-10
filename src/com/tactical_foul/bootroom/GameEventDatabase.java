@@ -22,9 +22,10 @@ public class GameEventDatabase extends SQLiteOpenHelper {
     public static final String COLUMN_EVENT_TYPE = "event_type";
     public static final String COLUMN_EVENT_SUBTYPE = "event_sub_type";
     public static final String COLUMN_OTHER_PLAYER_ID = "other_player_id";
+    public static final String COLUMN_POSITION = "position";
 
     private static final String DATABASE_NAME = "game_events.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private SQLiteDatabase Database;
 
@@ -34,9 +35,10 @@ public class GameEventDatabase extends SQLiteOpenHelper {
             COLUMN_TIMESTAMP + " integer, " + 
             COLUMN_PLAYER_ID + " integer, " + 
             COLUMN_GAME_ID + " integer, " + 
-            COLUMN_EVENT_TYPE + " integer, "
-            + COLUMN_EVENT_SUBTYPE + " integer, " 
-            + COLUMN_OTHER_PLAYER_ID + " integer);";
+            COLUMN_EVENT_TYPE + " integer, " +
+            COLUMN_EVENT_SUBTYPE + " integer, " +
+            COLUMN_OTHER_PLAYER_ID + " integer, " +
+            COLUMN_POSITION + " string);";
 
     public GameEventDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -63,6 +65,7 @@ public class GameEventDatabase extends SQLiteOpenHelper {
         cv.put(COLUMN_EVENT_TYPE, ge.EventType);
         cv.put(COLUMN_EVENT_SUBTYPE, ge.EventSubType);
         cv.put(COLUMN_OTHER_PLAYER_ID, ge.OtherPlayer_id);
+        cv.put(COLUMN_POSITION, ge.Position);
         long id = Database.insert(TABLE_GAME_EVENTS, null, cv);
         if (id == -1) {
             Log.e(LOG_TAG, "Error writing DB");
@@ -92,7 +95,8 @@ public class GameEventDatabase extends SQLiteOpenHelper {
         int event_type = c.getInt(c.getColumnIndex(COLUMN_EVENT_TYPE));
         int event_subtype = c.getInt(c.getColumnIndex(COLUMN_EVENT_SUBTYPE));
         long other_player_id = c.getLong(c.getColumnIndex(COLUMN_OTHER_PLAYER_ID));
-        return new GameEvent(timestamp, player_id, game_id, event_type, event_subtype, other_player_id);
+        String position = c.getString(c.getColumnIndex(COLUMN_POSITION));
+        return new GameEvent(timestamp, player_id, game_id, event_type, event_subtype, other_player_id, position);
     }
 
 }
