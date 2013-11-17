@@ -34,7 +34,7 @@ public class GameEvent extends Exportable {
     public final static int PUNT = 13;
     public final static int GOAL_KICK = 14;
     public final static int FOULED = 15;
-    public final static int DISPOSSESED = 16;
+    public final static int DISPOSSESSED = 16;
     public final static int OFFSIDES = 17;
 
     /* Pass Sub-Types */

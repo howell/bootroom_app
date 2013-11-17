@@ -2,7 +2,6 @@
 package com.tactical_foul.bootroom;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,8 +15,6 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends Activity implements EditGametimeDialogFragment.UpdateTimeListener {
 
@@ -246,7 +243,7 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
             case R.id.dribble:
                 return GameEvent.DRIBBLE;
             case R.id.dispossesed:
-                return GameEvent.DISPOSSESED;
+                return GameEvent.DISPOSSESSED;
             case R.id.foul:
                 return GameEvent.FOUL;
             case R.id.yellow_card:
