@@ -57,14 +57,20 @@
                 android:id="@+id/tackle"
                 android:title="@string/menu_tackle"/>
         <item
-                android:id="@+id/interception"
-                android:title="@string/menu_interception" />
+                android:id="@+id/interception_positioning"
+                android:title="@string/menu_interception_positioning" />
+        <item
+                android:id="@+id/interception_anticipation"
+                android:title="@string/menu_interception_anticipation" />
         <item
             android:id="@+id/clearance"
             android:title="@string/menu_clearance"/>
         <item
             android:id="@+id/dribble"
             android:title="@string/menu_dribble"/>
+        <item
+            android:id="@+id/dispossesed"
+            android:title="@string/menu_dispossesed"/>
     </group>
 
     <item
@@ -84,6 +90,12 @@
                 <item
                         android:id="@+id/red_card"
                         android:title="@string/menu_red_card"/>
+                <item
+                    android:id="@+id/offsides"
+                    android:title="@string/menu_offsides"/>
+                <item
+                    android:id="@+id/fouled"
+                    android:title="@string/menu_fouled"/>
             </group>
         </menu>
     </item>

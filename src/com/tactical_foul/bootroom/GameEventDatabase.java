@@ -59,7 +59,7 @@ public class GameEventDatabase extends SQLiteOpenHelper {
 
     public boolean addEvent(GameEvent ge) {
         ContentValues cv = new ContentValues();
-        cv.put(COLUMN_TIMESTAMP, ge.Timestamp);
+        cv.put(COLUMN_TIMESTAMP, ge.timestamp);
         cv.put(COLUMN_PLAYER_ID, ge.Player_id);
         cv.put(COLUMN_GAME_ID, ge.Game_id);
         cv.put(COLUMN_EVENT_TYPE, ge.EventType);

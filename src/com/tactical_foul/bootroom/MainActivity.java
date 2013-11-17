@@ -59,13 +59,13 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
         tvAwayTeam = (TextView) findViewById(R.id.away_team);
         HomeTeam = Team.createTheBeams();
         tvHomeTeam.setText(HomeTeam.Name);
-        tvAwayTeam.setText("Reds Porch");
+        tvAwayTeam.setText("Deportivo");
         SubbedPlayers = new HashMap<Long, Player>();
         for (int i = 0; i < HomeTeam.Roster.length; ++i) {
             SubbedPlayers.put(HomeTeam.Roster[i].id, HomeTeam.Roster[i]);
         }
         FieldPlayers = new HashMap<Integer, Player>();
-        CurrentGame = new Game(5, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
+        CurrentGame = new Game(7, HomeTeam.id, Game.NONE, Game.NONE, Game.NONE);
         GameEventDB = new GameEventDatabase(this);
     }
 
@@ -239,18 +239,24 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
                 return GameEvent.SHOT;
             case R.id.tackle:
                 return GameEvent.TACKLE;
-            case R.id.interception:
+            case R.id.interception_anticipation:case R.id.interception_positioning:
                 return GameEvent.INTERCEPTION;
             case R.id.clearance:
                 return GameEvent.CLEARANCE;
             case R.id.dribble:
                 return GameEvent.DRIBBLE;
+            case R.id.dispossesed:
+                return GameEvent.DISPOSSESED;
             case R.id.foul:
                 return GameEvent.FOUL;
             case R.id.yellow_card:
                 return GameEvent.YELLOW_CARD;
             case R.id.red_card:
                 return GameEvent.RED_CARD;
+            case R.id.offsides:
+                return GameEvent.OFFSIDES;
+            case R.id.fouled:
+                return GameEvent.FOULED;
             case R.id.gk_collect_successful: case R.id.gk_collect_unsuccessful:
                 return GameEvent.GK_COLLECT;
             case R.id.gk_goal_kick_successful: case R.id.gk_goal_kick_unsuccessful:
@@ -288,6 +294,10 @@ public class MainActivity extends Activity implements EditGametimeDialogFragment
                 return GameEvent.SHOT_OFF_TARGET;
             case R.id.shot_goal:
                 return GameEvent.GOAL;
+            case R.id.interception_positioning:
+                return GameEvent.INT_POSITIONING;
+            case R.id.interception_anticipation:
+                return GameEvent.INT_ANTICIPATION;
             case R.id.gk_collect_successful: case R.id.gk_goal_kick_successful: case R.id.gk_punt_successful:
                 return GameEvent.GK_SUCCESSFUL;
             case R.id.gk_collect_unsuccessful: case R.id.gk_goal_kick_unsuccessful: case R.id.gk_punt_unsuccessful:

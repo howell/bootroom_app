@@ -33,6 +33,9 @@ public class GameEvent extends Exportable {
     public final static int GK_COLLECT = 12;
     public final static int PUNT = 13;
     public final static int GOAL_KICK = 14;
+    public final static int FOULED = 15;
+    public final static int DISPOSSESED = 16;
+    public final static int OFFSIDES = 17;
 
     /* Pass Sub-Types */
     public final static int PASS_COMPLETED = 1;
@@ -57,10 +60,14 @@ public class GameEvent extends Exportable {
     public final static int GK_SUCCESSFUL = 1;
     public final static int GK_UNSUCCESSFUL = 2;
 
+    /* Interception Sub-Types */
+    public final static int INT_ANTICIPATION = 1;
+    public final static int INT_POSITIONING = 2;
+
     /* for events where there is no other player */
     public final static int NONE = 0;
 
-    public int Timestamp; // in seconds
+    public int timestamp; // in seconds
     public long Player_id;
     public long Game_id;
     public int EventType;
@@ -72,7 +79,7 @@ public class GameEvent extends Exportable {
 
     public GameEvent(int timestamp, long player_id, long game_id, int eventType,
             int eventSubType, long otherPlayer_id, String position) {
-        Timestamp = timestamp;
+        this.timestamp = timestamp;
         Player_id = player_id;
         Game_id = game_id;
         EventType = eventType;
@@ -105,7 +112,7 @@ public class GameEvent extends Exportable {
     @Override
     protected List<NameValuePair> getPostParams() {
         List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-        postParams.add(new BasicNameValuePair("game_event[timestamp]", String.valueOf(Timestamp)));
+        postParams.add(new BasicNameValuePair("game_event[timestamp]", String.valueOf(timestamp)));
         postParams.add(new BasicNameValuePair("game_event[player_id]", String.valueOf(Player_id)));
         postParams.add(new BasicNameValuePair("game_event[game_id]", String.valueOf(Game_id)));
         postParams.add(new BasicNameValuePair("game_event[event_type]", String.valueOf(EventType)));

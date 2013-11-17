@@ -25,9 +25,13 @@
     <string name="menu_yellow_card">Yellow Card</string>
     <string name="menu_red_card">Red Card</string>
     <string name="menu_swap">Swap -></string>
-    <string name="menu_interception">Interception</string>
+    <string name="menu_interception_positioning">Interception (Positioning)</string>
+    <string name="menu_interception_anticipation">Interception (Anticipation)</string>
     <string name="menu_clearance">Clearance</string>
     <string name="menu_dribble">Dribble</string>
+    <string name="menu_fouled">Fouled</string>
+    <string name="menu_dispossesed">Dispossesed</string>
+    <string name="menu_offsides">Offsides</string>
     <string name="minutes">Minutes</string>
     <string name="seconds">Seconds</string>
     <string name="gk_button">GK</string>
