@@ -15,8 +15,10 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Team extends Exportable {
+public class Team extends JSONExportable {
     private static final String LOG_TAG = "BootroomTeam";
     
     public static final int NONE = 0;
@@ -47,6 +49,19 @@ public class Team extends Exportable {
     @Override
     protected String exportURL() {
         return extendURL("/teams");
+    }
+
+    @Override
+    protected JSONObject toJSON() {
+        try {
+            JSONObject j = new JSONObject();
+            j.put("name", String.valueOf(Name));
+            j.put("league", String.valueOf(League));
+            return j;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

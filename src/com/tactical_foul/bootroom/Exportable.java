@@ -3,8 +3,10 @@ package com.tactical_foul.bootroom;
 import android.os.AsyncTask;
 import android.util.Log;
 import org.apache.http.NameValuePair;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -21,8 +23,15 @@ public abstract class Exportable {
     private static final String BASE_URL = "http://beams.herokuapp.com";
 
     public void export() {
+        String postQuery = null;
+        try {
+            postQuery = Connectivity.getQuery(getPostParams());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return;
+        }
         ExportTask et = new ExportTask();
-        et.execute();
+        et.execute(postQuery, exportURL());
     }
 
     /**
@@ -47,14 +56,15 @@ public abstract class Exportable {
      */
     protected abstract String logTag();
 
-    private class ExportTask extends AsyncTask<Void, Void, Void> {
+    protected class ExportTask extends AsyncTask<String, Void, Void> {
 
         @Override
-        protected Void doInBackground(Void... args) {
+        protected Void doInBackground(String... args) {
+            String postString = args[0];
+            String exportURL = args[1];
             try {
-                HttpURLConnection conn = Connectivity.openURL(exportURL(), "POST");
-                List<NameValuePair> postParams = getPostParams();
-                Connectivity.postContent(conn, postParams);
+                HttpURLConnection conn = Connectivity.openURL(exportURL, "POST");
+                Connectivity.postContent(conn, postString);
                 conn.connect();
                 // read the response
                 Connectivity.readResponse(conn);

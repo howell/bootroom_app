@@ -3,11 +3,13 @@ package com.tactical_foul.bootroom;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player extends Exportable {
+public class Player extends JSONExportable {
 
     private static final String LOG_TAG = "BootroomPlayer";
 
@@ -41,6 +43,22 @@ public class Player extends Exportable {
     @Override
     protected String exportURL() {
         return extendURL("/players");
+    }
+
+    @Override
+    protected JSONObject toJSON() {
+        try {
+            JSONObject j = new JSONObject();
+            j.put("first_name", FirstName);
+            j.put("last_name", LastName);
+            j.put("number", String.valueOf(Number));
+            j.put("email", Email);
+            j.put("team_id", String.valueOf(Team_id));
+            return j;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

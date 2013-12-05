@@ -84,7 +84,7 @@ public class GameEventDatabase extends SQLiteOpenHelper {
         Cursor c = Database.query(TABLE_GAME_EVENTS, null, null, null, null, null, null);
         while (c.moveToNext()) {
             GameEvent ge = cursorToGameEvent(c);
-            ge.export();
+            ge.exportJSON();
         }
     }
     

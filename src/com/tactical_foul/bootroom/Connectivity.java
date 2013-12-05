@@ -66,11 +66,11 @@ public class Connectivity {
      * @param params
      * @throws IOException
      */
-    public static void postContent(HttpURLConnection conn, List<NameValuePair> params)
+    public static void postContent(HttpURLConnection conn, String postQuery)
             throws IOException {
         // format a list of parameters into a post query and then write it to
         // the connection's output stream
-        String postQuery = Connectivity.getQuery(params);
+        // String postQuery = Connectivity.getQuery(params);
         conn.setFixedLengthStreamingMode(postQuery.getBytes().length);
         Log.d(TAG, "posting " + postQuery);
         Connectivity.sendQuery(conn, postQuery);
@@ -161,6 +161,8 @@ public class Connectivity {
         if (method.equalsIgnoreCase("POST")) {
             conn.setDoOutput(true);
         }
+        if (url.endsWith("json"))
+            conn.addRequestProperty("Content-Type", "application/json");
         return conn;
     }
 }

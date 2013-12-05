@@ -13,8 +13,10 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class GameEvent extends Exportable {
+public class GameEvent extends JSONExportable {
     private final static String LOG_TAG = "BootroomGameEvent";
     /* Event Types */
 
@@ -107,6 +109,25 @@ public class GameEvent extends Exportable {
      */
     public boolean is_goal_scored() {
         return EventType == SHOT && EventSubType == GOAL;
+    }
+
+    @Override
+    protected JSONObject toJSON() {
+        try {
+            JSONObject j = new JSONObject();
+            j.put("timestamp", String.valueOf(timestamp));
+            j.put("player_id", String.valueOf(Player_id));
+            j.put("game_id", String.valueOf(Game_id));
+            j.put("event_type", String.valueOf(EventType));
+            j.put("event_subtype", String.valueOf(EventSubType));
+            j.put("other_player_id", String.valueOf(OtherPlayer_id));
+            j.put("position", String.valueOf(Position));
+            return j;
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
